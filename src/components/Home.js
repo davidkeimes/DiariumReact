@@ -20,9 +20,9 @@ class Home extends Component {
   }
 
   render() {
-    const journals = this.props.journals.map((journal) =>
+    const journals = this.props.journals.map((journal, index) =>
       <JournalCard 
-        key={journal._id} 
+        key={journal._id + index + journal.name} 
         journal={journal} 
         onJournalClick={this.handleJournalClick}>
       </JournalCard>

@@ -21,6 +21,11 @@ class EntryStore extends EventEmitter {
     this.emit("change");
   }
 
+  updateEntries(entry) {
+    var toUpdate = this.entries.find(e => e._id == entry._id);
+    this.entries[this.entries.indexOf(toUpdate)] = entry;
+  }
+
   handleActions(action) {
     switch (action.type) {
       case "FETCH_ENTRIES_SUCCESS":
@@ -32,6 +37,10 @@ class EntryStore extends EventEmitter {
         break;
       case "SET_ACTIVE_ENTRY":
         this.activeEntry = action.payload.entry;
+        break;
+      case "SAVE_ENTRY_SUCCESS":
+        this.activeEntry = action.payload.response;
+        this.updateEntries(action.payload.response);
         break;
       default:
         break;

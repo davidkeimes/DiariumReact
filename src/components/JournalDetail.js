@@ -31,8 +31,8 @@ class JournalDetail extends Component {
   }
 
   render() {
-    const entries = this.props.entries.map((entry) =>
-      <Link key={entry._id} to={"/entry/"+entry._id}  style={{ textDecoration: 'none'}}>
+    const entries = this.props.entries.map((entry, index) =>
+      <Link key={entry._id+index+entry.name} to={"/entry/"+entry._id}  style={{ textDecoration: 'none'}}>
         <ListItem onClick={() => this.handleEntryClick(entry)}>
           <ListItemText primary={entry.name} />
         </ListItem>

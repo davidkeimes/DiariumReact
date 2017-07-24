@@ -39,6 +39,25 @@ export function createEntry(name, content, journalId) {
     });
 }
 
+export function saveEntry(entry) {
+  dispatcher.dispatch({ type: "SAVE_ENTRY" });
+  request
+    .put(apiEndpoint + "/entries/" + entry._id)
+    .send(entry)
+    .end(function (err, res) {
+      if (err || !res.ok) {
+        dispatcher.dispatch({ type: "SAVE_ENTRY_ERROR" });
+      } else {
+        dispatcher.dispatch({
+          type: "SAVE_ENTRY_SUCCESS",
+          payload: {
+            response: res.body
+          }
+        });
+      }
+    });
+}
+
 export function setActiveEntry(entry) {
   dispatcher.dispatch({
     type: "SET_ACTIVE_ENTRY",
