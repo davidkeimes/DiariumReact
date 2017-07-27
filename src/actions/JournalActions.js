@@ -39,6 +39,43 @@ export function createJournal(name, img_url) {
     });
 }
 
+export function deleteJournal(journal) {
+  dispatcher.dispatch({ type: "DELETE_JOURNAL" });
+  request
+    .delete(apiEndpoint + "/journals/" + journal._id)
+    .end(function (err, res) {
+      if (err || !res.ok) {
+        dispatcher.dispatch({ type: "DELETE_JOURNAL_ERROR" });
+      } else {
+        dispatcher.dispatch({
+          type: "DELETE_JOURNAL_SUCCESS",
+          payload: {
+            journal: journal 
+          }
+        });
+      }
+    });
+}
+
+export function searchJournals(search) {
+  dispatcher.dispatch({ type: "SEARCH_JOURNALS" });
+  request
+    .post(apiEndpoint + "/journals/search")
+    .send({search: search})
+    .end(function (err, res) {
+      if (err || !res.ok) {
+        dispatcher.dispatch({ type: "SEARCH_JOURNALS_ERROR" });
+      } else {
+        dispatcher.dispatch({
+          type: "SEARCH_JOURNALS_SUCCESS",
+          payload: {
+            response: res.body 
+          }
+        });
+      }
+    });
+}
+
 export function setActiveJournal(journal) {
   dispatcher.dispatch({
     type: "SET_ACTIVE_JOURNAL",

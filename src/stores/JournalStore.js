@@ -21,6 +21,11 @@ class JournalStore extends EventEmitter {
     return this.activeJournal;
   }
 
+  deleteJournal(journal) {
+    var toDelete = this.journals.find(j => j._id == journal._id);
+    this.journals.splice(this.journals.indexOf(toDelete), 1);
+  }
+
   handleActions(action) {
     switch (action.type) {
       case "FETCH_JOURNALS_SUCCESS":
@@ -32,6 +37,14 @@ class JournalStore extends EventEmitter {
         break;
       case "SET_ACTIVE_JOURNAL":
         this.activeJournal = action.payload.journal;
+        this.emit("change");
+        break;
+      case "DELETE_JOURNAL_SUCCESS":
+        this.deleteJournal(action.payload.journal);
+        this.emit("change");
+      case "SEARCH_JOURNALS_SUCCESS":
+        this.journals = action.payload.response;
+        this.emit("change");
         break;
       default:
         break;

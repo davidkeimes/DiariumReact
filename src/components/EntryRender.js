@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import EntryStore from "../stores/EntryStore";
-import * as EntryActions from "../actions/EntryActions";
 import ReactQuill from 'react-quill'
 import theme from 'react-quill/dist/quill.snow.css'
 import Button from 'material-ui/Button';
@@ -10,13 +8,15 @@ import { Link } from 'react-router-dom';
 const styles = {
   container: {
     margin: 'auto',
+    marginTop: '2em',
     padding: '1em',
-    maxWidth: '900px'
+    maxWidth: '816px',
+    backgroundColor: 'white'
   },
   fab: {
-    position: 'fixed',
-    right: '115px',
-    top: '100px',
+    position: 'absolute',
+    right: '150px',
+    top: '75px',
     zIndex: '1000'
   }
 }
@@ -26,12 +26,20 @@ class EntryRender extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    if(this.props.entry._id === undefined){
+      setTimeout(() =>  {this.props.onInitialize()}, 50);
+    }
+  }
+
   render() {
     const markup = {
       __html: this.props.entry.content
     }
     return (
       <div style={styles.container}>
+        <h2 style={{marginBottom:'0px'}}>{this.props.entry.name}</h2>
+        <h6 style={{marginTop:'2px', color:'#757575'}}>{'created on ' + this.props.entry.created_date}</h6>
         <div className="ql-container ql-snow">
           <div id="entryContent" className="ql-editor" dangerouslySetInnerHTML={markup}>
           </div>

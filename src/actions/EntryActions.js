@@ -20,6 +20,24 @@ export function fetchEntries(journalId) {
     });
 }
 
+export function fetchEntry(eId) {
+  dispatcher.dispatch({ type: "FETCH_ENTRY" });
+  request
+    .get(apiEndpoint + "/entries/" + eId)
+    .end(function (err, res) {
+      if (err || !res.ok) {
+        dispatcher.dispatch({ type: "FETCH_ENTRY_ERROR" });
+      } else {
+        dispatcher.dispatch({
+          type: "FETCH_ENTRY_SUCCESS",
+          payload: {
+            response: res.body
+          }
+        });
+      }
+    });
+}
+
 export function createEntry(name, content, journalId) {
   dispatcher.dispatch({ type: "CREATE_ENTRY" });
   request
@@ -52,6 +70,43 @@ export function saveEntry(entry) {
           type: "SAVE_ENTRY_SUCCESS",
           payload: {
             response: res.body
+          }
+        });
+      }
+    });
+}
+
+export function deleteEntry(entry) {
+  dispatcher.dispatch({ type: "DELETE_ENTRY" });
+  request
+    .delete(apiEndpoint + "/entries/" + entry._id)
+    .end(function (err, res) {
+      if (err || !res.ok) {
+        dispatcher.dispatch({ type: "DELETE_ENTRY_ERROR" });
+      } else {
+        dispatcher.dispatch({
+          type: "DELETE_ENTRY_SUCCESS",
+          payload: {
+            entry: entry 
+          }
+        });
+      }
+    });
+}
+
+export function searchEntries(search, journal) {
+  dispatcher.dispatch({ type: "SEARCH_ENTRIES" });
+  request
+    .post(apiEndpoint + "/entries/search")
+    .send({search: search, journal: journal._id})
+    .end(function (err, res) {
+      if (err || !res.ok) {
+        dispatcher.dispatch({ type: "SEARCH_ENTRIES_ERROR" });
+      } else {
+        dispatcher.dispatch({
+          type: "SEARCH_ENTRIES_SUCCESS",
+          payload: {
+            response: res.body 
           }
         });
       }

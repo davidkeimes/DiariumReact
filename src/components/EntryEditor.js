@@ -10,13 +10,15 @@ import { Link } from 'react-router-dom';
 const styles = {
   container: {
     margin: 'auto',
+    marginTop: '2em',
     padding: '1em',
-    maxWidth: '900px'
+    maxWidth: '816px',
+    backgroundColor: 'white'
   },
   fab: {
-    position: 'fixed',
-    right: '115px',
-    top: '100px',
+    position: 'absolute',
+    right: '150px',
+    top: '75px',
     zIndex: '1000'
   }  
 }
@@ -26,6 +28,17 @@ class EntryEditor extends Component {
     super(props);
     this.state = { text: this.props.entry.content }
     this.handleChange = this.handleChange.bind(this)
+  }
+
+  componentDidMount() {
+    if(this.props.entry._id === undefined){
+      setTimeout(() =>  {this.props.onInitialize()}, 50);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({text: nextProps.entry.content});
+    console.log('new props')
   }
 
   handleChange(value) {
@@ -55,6 +68,8 @@ class EntryEditor extends Component {
 
     return (
       <div style={styles.container}>
+        <h2 style={{marginBottom:'0px'}}>{this.props.entry.name}</h2>
+        <h6 style={{marginTop:'2px', color:'#757575'}}>{'created on ' + this.props.entry.created_date}</h6>
         <ReactQuill 
           theme="snow" 
           modules={modules} 

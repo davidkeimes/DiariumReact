@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import JournalCard from "./JournalCard";
+import Grid from 'material-ui/Grid';
 
 const styles = {
   container: {
     margin: 'auto', 
     padding: '1em', 
-    maxWidth: '900px'
+    maxWidth: '900px',
+    flexGrow: 1,
+  },
+  card: {
+    width: '400px',
   }
 }
 
@@ -21,17 +26,19 @@ class Home extends Component {
 
   render() {
     const journals = this.props.journals.map((journal, index) =>
-      <JournalCard 
-        key={journal._id + index + journal.name} 
-        journal={journal} 
-        onJournalClick={this.handleJournalClick}>
-      </JournalCard>
+      <Grid item xs={12} sm={6} key={journal._id + index + journal.name} >
+        <JournalCard 
+          style={styles.card}
+          journal={journal} 
+          onJournalClick={this.handleJournalClick}>
+        </JournalCard>
+      </Grid>
     );
 
     return(
-      <div style={styles.container}>
+      <Grid container style={styles.container}>
         {journals}
-      </div>
+      </Grid>
     );
   }
 }
