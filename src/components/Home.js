@@ -24,8 +24,8 @@ class Home extends Component {
     this.props.onJournalClick(journal);
   }
 
-  render() {
-    const journals = this.props.journals.map((journal, index) =>
+  renderJournals(journals) {
+    return journals.map((journal, index) =>
       <Grid item xs={12} sm={6} key={journal._id + index + journal.name} >
         <JournalCard 
           style={styles.card}
@@ -34,7 +34,15 @@ class Home extends Component {
         </JournalCard>
       </Grid>
     );
+  }
 
+  render() {
+    let journals;
+    if(this.props.journals !== undefined) {
+      journals = this.renderJournals(this.props.journals);
+    } else {
+      journals = null;
+    }
     return(
       <Grid container style={styles.container}>
         {journals}
